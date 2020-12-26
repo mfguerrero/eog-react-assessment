@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { actions } from '../../redux/weather/weather.reducer';
+import { weatherDataRecevied, weatherApiErrorReceived } from '../../redux/weather/weather.reducer';
 import { Provider, createClient, useQuery } from 'urql';
 import { useGeolocation } from 'react-use';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Chip from '../../components/layout/chip.component';
 
 const client = createClient({
-  url: 'https://react.eogresources.com/graphql',
+  url: process.env.REACT_APP_GQL_HTTP_ENDPOINT,
 });
 
 const query = `
@@ -60,15 +60,15 @@ const Weather = () => {
 
   useEffect(() => {
     if (error) {
-      dispatch(actions.weatherApiErrorReceived({ error: error.message }));
+      dispatch(weatherApiErrorReceived({ error: error.message }));
       return;
     }
     if (!data) return;
     const { getWeatherForLocation } = data;
-    dispatch(actions.weatherDataRecevied(getWeatherForLocation));
+    dispatch(weatherDataRecevied(getWeatherForLocation));
   }, [dispatch, data, error]);
 
   if (fetching) return <LinearProgress />;
 
-  return <Chip label={`Weather in ${locationName}: ${description} and ${temperatureinFahrenheit}°`} />;
+  return <Chip label={`Weather in ${locationName}: ${description} and ${Math.floor(temperatureinFahrenheit)}°`} />;
 };
