@@ -1,9 +1,10 @@
 import { takeEvery, call } from 'redux-saga/effects';
 import { toast } from 'react-toastify';
-import { actions as WeatherActions, ApiErrorAction } from './reducer';
-import { PayloadAction } from 'redux-starter-kit';
+// import { actions as WeatherActions, ApiErrorAction } from './weather-reducer';
+import { actions as WeatherActions } from './weather.reducer';
+// import { PayloadAction } from 'redux-starter-kit';
 
-function* apiErrorReceived(action: PayloadAction<ApiErrorAction>) {
+function* apiErrorReceived(action) {
   yield call(toast.error, `Error Received: ${action.payload.error}`);
 }
 

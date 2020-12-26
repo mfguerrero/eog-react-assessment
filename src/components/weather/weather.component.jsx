@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { actions } from './reducer';
+import { actions } from '../../redux/weather/weather.reducer';
 import { Provider, createClient, useQuery } from 'urql';
 import { useGeolocation } from 'react-use';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import Chip from '../../components/Chip';
-import { IState } from '../../store';
+import Chip from '../../components/layout/chip.component';
 
 const client = createClient({
   url: 'https://react.eogresources.com/graphql',
@@ -21,7 +20,7 @@ query($latLong: WeatherQuery!) {
 }
 `;
 
-const getWeather = (state: IState) => {
+const getWeather = state => {
   const { temperatureinFahrenheit, description, locationName } = state.weather;
   return {
     temperatureinFahrenheit,
@@ -40,11 +39,13 @@ export default () => {
 
 const Weather = () => {
   const getLocation = useGeolocation();
+
   // Default to houston
   const latLong = {
     latitude: getLocation.latitude || 29.7604,
     longitude: getLocation.longitude || -95.3698,
   };
+
   const dispatch = useDispatch();
   const { temperatureinFahrenheit, description, locationName } = useSelector(getWeather);
 
@@ -54,7 +55,9 @@ const Weather = () => {
       latLong,
     },
   });
+
   const { fetching, data, error } = result;
+
   useEffect(() => {
     if (error) {
       dispatch(actions.weatherApiErrorReceived({ error: error.message }));
