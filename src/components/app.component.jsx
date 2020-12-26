@@ -5,8 +5,8 @@ import { ToastContainer } from 'react-toastify';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import 'react-toastify/dist/ReactToastify.css';
-import Header from '../components/layout/header.component';
-import Wrapper from '../components/layout/wrapper.component';
+import Wrapper from './layout/wrapper.component';
+import Dashboard from './dashboard/dashboard.component';
 
 const store = createStore();
 const theme = createMuiTheme({
@@ -28,7 +28,7 @@ const App = () => (
     <CssBaseline />
     <Provider store={store}>
       <Wrapper>
-        <Header />
+        <Dashboard />
         <ToastContainer />
       </Wrapper>
     </Provider>
