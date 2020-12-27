@@ -1,17 +1,8 @@
-import { takeEvery, takeLatest, spawn, all, call, put } from 'redux-saga/effects';
-import { toast } from 'react-toastify';
+import { takeLatest, all, call, put } from 'redux-saga/effects';
 import { WEATHER_QUERY } from '../../graphql/gql.queries';
 import { fetchResult } from '../../graphql/gql.util';
 import { fetchWeatherStart, weatherDataRecevied } from './weather.reducer';
 import { weatherApiErrorReceived } from './weather.reducer';
-
-function* apiErrorReceived(action) {
-  yield call(toast.error, `Error Received: ${action.payload.error}`);
-}
-
-function* watchApiError() {
-  yield takeEvery(weatherApiErrorReceived, apiErrorReceived);
-}
 
 export function* fetchWeatherAsync({ payload }) {
   try {
@@ -28,6 +19,5 @@ export function* fetchWeather() {
 }
 
 export function* weatherSaga() {
-  yield spawn(watchApiError);
   yield all([call(fetchWeather)]);
 }

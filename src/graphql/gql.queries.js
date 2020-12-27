@@ -9,3 +9,19 @@ export const WEATHER_QUERY = gql`
     }
   }
 `;
+
+export const METRICS_QUERY = gql`
+  query {
+    getMetrics
+  }
+`;
+
+export const MEASUREMENTS_QUERY = gql`
+  query($metric: String!, $after: Timestamp!) {
+    getMeasurements(input: { metricName: $metric, after: $after }) {
+      at
+      value
+      unit
+    }
+  }
+`;

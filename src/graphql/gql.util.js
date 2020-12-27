@@ -6,7 +6,7 @@ import { HttpLink } from 'apollo-link-http';
 const retryLink = new RetryLink({
   delay: {
     initial: 300,
-    max: Infinity,
+    max: 10000,
     jitter: true,
   },
   attempts: {
