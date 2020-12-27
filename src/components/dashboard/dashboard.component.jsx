@@ -14,6 +14,7 @@ import Paper from '@material-ui/core/Paper';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 
+import Weather from '../weather/weather.component';
 import MetricsList from '../metrics-list/metrics-list.component';
 
 const drawerWidth = 200;
@@ -123,6 +124,7 @@ const Dashboard = () => {
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
             {name} EOG React Visualization Assessment
           </Typography>
+          <Weather />
         </Toolbar>
       </AppBar>
       <Drawer
