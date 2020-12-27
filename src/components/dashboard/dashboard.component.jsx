@@ -16,6 +16,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 
 import Weather from '../weather/weather.component';
 import MetricsList from '../metrics-list/metrics-list.component';
+import Chart from '../chart/chart.component';
 
 const drawerWidth = 200;
 const name = "Mario Felix Guerrero's";
@@ -153,7 +154,9 @@ const Dashboard = () => {
             </Grid>
             {/* Chart */}
             <Grid item xs={12} md={9} lg={10}>
-              <Paper className={fixedHeightPaper}>Chart</Paper>
+              <Paper className={fixedHeightPaper}>
+                <Chart />
+              </Paper>
             </Grid>
           </Grid>
         </Container>
