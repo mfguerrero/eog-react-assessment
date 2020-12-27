@@ -1,8 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-//  Non reducer actions
-// export const fetchMeasurementsStart = createAction('metrics/fetchMeasurementsStart');
-
 const metricsSlice = createSlice({
   name: 'metrics',
   initialState: {
@@ -14,7 +11,8 @@ const metricsSlice = createSlice({
     fetchMetricsStart: state => {
       state.metrics.loading = true;
     },
-    addMetrics: (state, action) => {
+    metricsDataReceived: (state, action) => {
+      state.metrics.loading = false;
       state.metrics.data = action.payload;
     },
     metricsApiErrorReceived: state => {
@@ -44,7 +42,7 @@ const metricsSlice = createSlice({
 
 export const {
   fetchMetricsStart,
-  addMetrics,
+  metricsDataReceived,
   metricsApiErrorReceived,
   fetchMeasurementsStart,
   addMeasurements,

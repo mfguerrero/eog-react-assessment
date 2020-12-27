@@ -1,6 +1,7 @@
 import { spawn, takeEvery, all, call } from 'redux-saga/effects';
 import { toast } from 'react-toastify';
 import { weatherSaga } from './weather/weather.saga';
+import { metricsSaga } from './metrics/metrics.saga';
 import { weatherApiErrorReceived } from './weather/weather.reducer';
 import { metricsApiErrorReceived, measurementsApiErrorReceived } from './metrics/metrics.reducer';
 
@@ -16,5 +17,5 @@ function* watchApiError() {
 
 export default function* root() {
   yield spawn(watchApiError);
-  yield all([call(weatherSaga)]);
+  yield all([call(weatherSaga), call(metricsSaga)]);
 }
