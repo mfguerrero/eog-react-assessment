@@ -8,7 +8,7 @@ import {
   metricsDataReceived,
   metricsApiErrorReceived,
   fetchMeasurementsStart,
-  addMeasurements,
+  measurementsDataReceived,
   measurementsApiErrorReceived,
 } from './metrics.reducer';
 
@@ -27,10 +27,11 @@ export function* fetchMetrics() {
 }
 
 export function* fetchMeasurementsAsync({ payload: { metric, after } }) {
+  console.log(metric, after);
   try {
     const response = yield fetchResult({ query: MEASUREMENTS_QUERY, variables: { metric, after } });
     const measurements = response.data.getMeasurements;
-    yield put(addMeasurements(metric, measurements));
+    yield put(measurementsDataReceived(metric, measurements));
   } catch (error) {
     yield put(measurementsApiErrorReceived({ error: error.message }));
   }

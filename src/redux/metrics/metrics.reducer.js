@@ -21,8 +21,9 @@ const metricsSlice = createSlice({
     fetchMeasurementsStart: state => {
       state.measurements.loading = true;
     },
-    addMeasurements: {
+    measurementsDataReceived: {
       reducer: (state, action) => {
+        state.measurements.loading = false;
         const { metric, measurements } = action.payload;
         state.measurements.data[metric] = measurements;
       },
@@ -45,7 +46,7 @@ export const {
   metricsDataReceived,
   metricsApiErrorReceived,
   fetchMeasurementsStart,
-  addMeasurements,
+  measurementsDataReceived,
   measurementsApiErrorReceived,
   removeMeasurements,
   addNewMeasurement,
