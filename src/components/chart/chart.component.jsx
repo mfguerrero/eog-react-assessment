@@ -1,75 +1,101 @@
-import React from 'react';
-import { LineChart, CartesianGrid, Line, XAxis, YAxis, ResponsiveContainer, Tooltip, Legend } from 'recharts';
-
-const receivedData = [
-  {
-    flareTemp: [
-      { value: 90, unit: 'F', at: 1608668275109 },
-      { value: 88, unit: 'F', at: 1608668276409 },
-      { value: 93, unit: 'F', at: 1608668277709 },
-    ],
-  },
-  {
-    injValveOpen: [
-      { value: 0, unit: '%', at: 1608668275109 },
-      { value: 0.14, unit: '%', at: 1608668276409 },
-      { value: 0.09, unit: '%', at: 1608668277709 },
-    ],
-  },
-  {
-    oilTemp: [
-      { value: 190, unit: 'F', at: 1608668275109 },
-      { value: 170, unit: 'F', at: 1608668276409 },
-      { value: 220, unit: 'F', at: 1608668277709 },
-    ],
-  },
-  {
-    casingPressure: [
-      { value: 292.65, unit: 'PSI', at: 1608668275109 },
-      { value: 272.65, unit: 'PSI', at: 1608668276409 },
-      { value: 302.65, unit: 'PSI', at: 1608668277709 },
-    ],
-  },
-  {
-    tubingPressure: [
-      { value: 189.25, unit: 'PSI', at: 1608668275109 },
-      { value: 199.25, unit: 'PSI', at: 1608668276409 },
-      { value: 200, unit: 'PSI', at: 1608668277709 },
-    ],
-  },
-  {
-    waterTemp: [
-      { value: 160, unit: 'F', at: 1608668275109 },
-      { value: 145, unit: 'F', at: 1608668276409 },
-      { value: 197, unit: 'F', at: 1608668277709 },
-    ],
-  },
-];
-
-const parseReceived = received => {
-  const data = [];
-  received.forEach(measurement => {
-    const metric = Object.keys(measurement)[0];
-    data.push({ metric, data: measurement[metric] });
-  });
-  return data;
-};
-
-const measurements = parseReceived(receivedData);
-console.log(measurements);
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip, Legend, Label } from 'recharts';
+import randomColor from 'randomcolor';
+import moment from 'moment';
 
 const Chart = () => {
+  const getMeasurements = useSelector(state => state.measurements.measurements);
+  const { loading, data } = getMeasurements;
+  const [measurements, setMeasurements] = useState([]);
+
+  const generateRandomColor = () => {
+    const color = randomColor({ hue: 'random', luminosity: 'dark', count: 1 })[0];
+    return color;
+  };
+
+  const parseData = received => {
+    const data = [];
+    const receivedKeys = Object.keys(received);
+
+    if (receivedKeys.length > 0) {
+      receivedKeys.forEach(key => {
+        data.push({
+          metric: key,
+          unit: received[key][0].unit,
+          color: generateRandomColor(),
+          data: received[key],
+        });
+      });
+      setMeasurements(data);
+    } else {
+      setMeasurements([]);
+    }
+  };
+
+  useEffect(() => {
+    if (!loading) parseData(data);
+    // eslint-disable-next-line
+  }, [loading, data]);
+
+  const setYAxisId = unit => {
+    switch (unit) {
+      case 'F':
+        return 'degrees';
+      case 'PSI':
+        return 'psi';
+      case '%':
+        return 'percent';
+      default:
+        return '';
+    }
+  };
+
   return (
-    <ResponsiveContainer width="100%" height="100%">
-      <LineChart width={600} height={300}>
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="at" type="category" allowDuplicatedCategory={false} />
-        <YAxis dataKey="value" />
-        <Tooltip />
+    <ResponsiveContainer width="99%">
+      <LineChart margin={{ top: 20, right: 30, left: 0, bottom: 20 }}>
+        <XAxis
+          dataKey="at"
+          type="category"
+          allowDuplicatedCategory={false}
+          interval={138}
+          tickFormatter={tickItem => moment(tickItem).format('h:mm')}
+        />
+        <YAxis yAxisId="percent">
+          <Label value="%" position="top" />
+        </YAxis>
+        <YAxis yAxisId="degrees">
+          <Label value={`${'\xB0'}F`} position="top" />
+        </YAxis>
+        <YAxis yAxisId="psi">
+          <Label value="PSI" position="top" />
+        </YAxis>
+        <Tooltip
+          labelStyle={{ fontWeight: 'bold' }}
+          labelFormatter={label => moment(label).format('MM-DD-YYYY h:mm:ss')}
+          position={{ x: 200, y: 10 }}
+          wrapperStyle={{
+            opacity: '.80',
+            width: 170,
+          }}
+        />
         <Legend />
-        {measurements.map(m => (
-          <Line dataKey="value" data={m.data} name={m.metric} key={m.metric} />
-        ))}
+        {measurements.map(m => {
+          return (
+            <Line
+              dataKey="value"
+              data={m.data}
+              name={m.metric}
+              key={m.metric}
+              dot={false}
+              activeDot={false}
+              isAnimationActive={false}
+              legendType="square"
+              stroke={m.color}
+              yAxisId={setYAxisId(m.unit)}
+            />
+          );
+        })}
       </LineChart>
     </ResponsiveContainer>
   );
