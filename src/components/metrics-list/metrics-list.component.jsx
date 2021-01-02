@@ -15,7 +15,7 @@ import Paper from '@material-ui/core/Paper';
 import { useStyles } from './metrics-list.styles';
 
 import { fetchMetricsStart, addSelectedMetric, removeSelectedMetric } from '../../redux/metrics/metrics.reducer';
-import { fetchMeasurementsStart } from '../../redux/measurements/measurements.reducer';
+import { fetchMeasurementsStart } from '../../redux/metrics/metrics.reducer';
 
 const MetricsList = ({ visible }) => {
   const dispatch = useDispatch();

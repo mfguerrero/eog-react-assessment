@@ -31,10 +31,21 @@ export const MULTI_MEASUREMENTS_QUERY = gql`
     getMultipleMeasurements(input: $metrics) {
       metric
       measurements {
-        at
-        value
-        unit
+        x: at
+        y: value
+        z: unit
       }
+    }
+  }
+`;
+
+export const MEASUREMENT_SUBSCRIPTION = gql`
+  subscription {
+    newMeasurement {
+      metric
+      value
+      at
+      unit
     }
   }
 `;

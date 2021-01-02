@@ -1,23 +1,21 @@
-import React, { useState, useRef } from 'react';
-import clsx from 'clsx';
+import React, { useState, useRef, Fragment } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
-import Paper from '@material-ui/core/Paper';
 import Fab from '@material-ui/core/Fab';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import MetricsList from '../metrics-list/metrics-list.component';
 import Chart from '../chart/chart.component';
+import Weather from '../weather/weather.component';
 import { useStyles } from './dashboard.styles';
 import useEscape from '../../custom-hooks/useescape.hook';
-// import useOutsideClick from '../../custom-hooks/useoutside-click.hook';
 
-const name = "Mario Felix's";
+const name = "Mario Felix Guerrero's";
 
 const Dashboard = () => {
+  const classes = useStyles();
   const [showMetrics, setShowMetrics] = useState(false);
   const node = useRef();
 
@@ -25,49 +23,44 @@ const Dashboard = () => {
     setShowMetrics(!showMetrics);
   };
 
-  // const handleMouse = event => {
-  //   if (event.type === 'mouseenter') {
-  //     setShowMetrics(true);
-  //   } else {
-  //     setShowMetrics(false);
-  //   }
-  //   // if (showMetrics === false) setShowMetrics(true);
-  // };
-
   useEscape(() => setShowMetrics(false));
-  // useOutsideClick(node, () => {
-  //   setShowMetrics(false);
-  // });
-
-  const classes = useStyles();
 
   return (
-    <div className={classes.root}>
+    <Fragment>
       <CssBaseline />
-      <AppBar className={clsx(classes.appBar)}>
-        <Toolbar className={classes.toolbar}>
-          <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-            {name} EOG React Visualization Assessment
-          </Typography>
-          <div>
-            <Fab className={classes.metricsFab} variant="extended" onClick={handleClick}>
-              {showMetrics ? <KeyboardArrowUpIcon color="primary" /> : <KeyboardArrowDownIcon color="primary" />}
-              Metrics
-            </Fab>
+      <div className={classes.dashboard}>
+        <div className="header">
+          <AppBar>
+            <Toolbar className={classes.toolbar}>
+              <div className={classes.title}>
+                <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.titleText}>
+                  <span className={classes.name}>{name}</span> EOG React Visualization Assessment
+                </Typography>
+                <div className={classes.weatherContainer}>
+                  <Weather />
+                </div>
+              </div>
+
+              <div>
+                <Fab className={classes.metricsFab} variant="extended" onClick={handleClick}>
+                  {showMetrics ? <KeyboardArrowUpIcon color="primary" /> : <KeyboardArrowDownIcon color="primary" />}
+                  Metrics
+                </Fab>
+              </div>
+              <div ref={node}>
+                <MetricsList visible={showMetrics} />
+              </div>
+            </Toolbar>
+          </AppBar>
+        </div>
+        <main className={classes.container}>
+          <div></div>
+          <div className={classes.chartContainer}>
+            <Chart />
           </div>
-          <div ref={node}>
-            <MetricsList visible={showMetrics} />
-          </div>
-        </Toolbar>
-      </AppBar>
-      <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
-        <Container maxWidth="xl" className={classes.container}>
-          <Paper>Measurements</Paper>
-          <Paper className={classes.chartPaper}>{<Chart />}</Paper>
-        </Container>
-      </main>
-    </div>
+        </main>
+      </div>
+    </Fragment>
   );
 };
 

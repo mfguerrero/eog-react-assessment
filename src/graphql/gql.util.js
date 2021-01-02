@@ -22,7 +22,7 @@ export const fetchResult = operation => {
   return makePromise(execute(link, operation));
 };
 
-export const subscribe = operation => {
+export const getSubscription = operation => {
   const wsLink = new WebSocketLink({ uri: process.env.REACT_APP_GQL_WS_ENDPOINT });
-  return makePromise(execute(wsLink, operation));
+  return execute(wsLink, operation);
 };
