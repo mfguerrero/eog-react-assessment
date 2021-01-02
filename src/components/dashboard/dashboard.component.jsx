@@ -8,6 +8,7 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import MetricsList from '../metrics-list/metrics-list.component';
 import Chart from '../chart/chart.component';
+import MeasurementsList from '../measurements/measurements-list.component';
 import Weather from '../weather/weather.component';
 import { useStyles } from './dashboard.styles';
 import useEscape from '../../custom-hooks/useescape.hook';
@@ -54,7 +55,7 @@ const Dashboard = () => {
           </AppBar>
         </div>
         <main className={classes.container}>
-          <div></div>
+          <MeasurementsList />
           <div className={classes.chartContainer}>
             <Chart />
           </div>
