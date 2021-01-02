@@ -9,26 +9,58 @@ const metricsSlice = createSlice({
     newMeasurement: {},
   },
   reducers: {
+    /**
+     * Sets metric's loading prop to true, triggers async metrics fetch
+     * @param {reduxState} state
+     */
     fetchMetricsStart: state => {
       state.metrics.loading = true;
     },
+    /**
+     * Updates metrics state with received data
+     * @param {reduxstate} state
+     * @param {reduxAction} redux action containing metrics data payload
+     */
     metricsDataReceived: (state, action) => {
       state.metrics.loading = false;
       state.metrics.data = action.payload;
     },
+    /**
+     * Sets metrics loading to false after error handled
+     */
     metricsApiErrorReceived: state => {
       state.metrics.loading = false;
     },
+    /**
+     * Adds metric to selected metrics, receives metric in action's payload
+     * @param {reduxState} state
+     * @param {reduxAction} action, contains metric to add
+     */
+
     addSelectedMetric: (state, action) => {
       state.selectedMetrics.push(action.payload);
     },
+    /**
+     * Removes metric from selected metrics, receives metric in action's payload
+     * @param {reduxState} state
+     * @param {reduxAction} action, contains metric to remove
+     */
     removeSelectedMetric: (state, action) => {
       const filteredMetrics = state.selectedMetrics.filter(metric => metric !== action.payload);
       state.selectedMetrics = filteredMetrics;
     },
+    /**
+     * Sets measurements' loading prop to true, triggers async measurements fetch
+     * @param {reduxState} state
+     */
     fetchMeasurementsStart: state => {
       state.measurements.loading = true;
     },
+    /**
+     * Updates measurements state with received data
+     * @param {reduxstate} state
+     * @param {reduxAction} redux action containing measurements data payload
+     */
     measurementsDataReceived: (state, { payload }) => {
       state.measurements.loading = false;
       const newMeasurements = {};
@@ -37,9 +69,15 @@ const metricsSlice = createSlice({
       });
       state.measurements.data = newMeasurements;
     },
+    /**
+     * Sets measurements loading to false
+     */
     measurementsApiErrorReceived: state => {
       state.measurements.loading = false;
     },
+    /**
+     * Adds new measurement received from subscription
+     */
     addNewMeasurement: (state, { payload: { metric, at, value, unit } }) => {
       state.newMeasurement = {
         metric,
@@ -57,6 +95,9 @@ const metricsSlice = createSlice({
   },
 });
 
+/**
+ * Exports metrics' reducer, actions
+ */
 export const {
   fetchMetricsStart,
   metricsDataReceived,

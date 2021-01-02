@@ -12,6 +12,9 @@ import {
   measurementsApiErrorReceived,
 } from './metrics.reducer';
 
+/**
+ * Fetch metrics asyc
+ */
 export function* fetchMetricsAsync() {
   try {
     const response = yield fetchResult({ query: METRICS_QUERY });
@@ -21,7 +24,10 @@ export function* fetchMetricsAsync() {
     yield put(metricsApiErrorReceived({ error: error.message }));
   }
 }
-
+/**
+ * Fetch measurements asyc, receives metrics array in action payload
+ * @param {reduxAction} redux action containing the metrics to fetch measurements for
+ */
 export function* fetchMeasurementsAsync({ payload }) {
   if (payload.length === 0) {
     yield put(measurementsDataReceived([]));
@@ -38,15 +44,22 @@ export function* fetchMeasurementsAsync({ payload }) {
     }
   }
 }
-
+/**
+ * Starts fetching measurements
+ */
 export function* fetchMeasurements() {
   yield takeLatest(fetchMeasurementsStart, fetchMeasurementsAsync);
 }
-
+/**
+ * Listen for fetching metrics actions
+ */
 export function* fetchMetrics() {
   yield takeLatest(fetchMetricsStart, fetchMetricsAsync);
 }
 
+/**
+ * Init fetching data related sagas
+ */
 export function* metricsSaga() {
   yield all([call(fetchMetrics), call(fetchMeasurements)]);
 }

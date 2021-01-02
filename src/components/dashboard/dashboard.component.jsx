@@ -15,6 +15,9 @@ import useEscape from '../../custom-hooks/useescape.hook';
 
 const name = "Mario Felix Guerrero's";
 
+/**
+ * Renders dashboard and displays metric's live measurements and chart
+ */
 const Dashboard = () => {
   const classes = useStyles();
   const [showMetrics, setShowMetrics] = useState(false);
@@ -24,6 +27,9 @@ const Dashboard = () => {
     setShowMetrics(!showMetrics);
   };
 
+  /**
+   * Hides metrics list on escape key pressed
+   */
   useEscape(() => setShowMetrics(false));
 
   return (
@@ -55,8 +61,14 @@ const Dashboard = () => {
           </AppBar>
         </div>
         <main className={classes.container}>
+          {/**
+           * Renders live measurements list
+           */}
           <MeasurementsList />
           <div className={classes.chartContainer}>
+            {/**
+             * Render metrics chart
+             */}
             <Chart />
           </div>
         </main>

@@ -8,6 +8,9 @@ import './chart.styles.scss';
 
 import { generateColor } from '../../util/util';
 
+/**
+ * Renders metrics' measurements
+ */
 const Chart = () => {
   const theme = useTheme();
   const getMeasurements = useSelector(state => state.metrics.measurements);
@@ -15,12 +18,21 @@ const Chart = () => {
   const keys = Object.keys(data);
   const [crosshairValues, setCrosshairValues] = useState([]);
 
+  /**
+   * Sets values to display on crosshair
+   * @param {object} value data point
+   * @param {int} index data point index
+   */
   const setCrosshairVal = (value, index) => {
     const keys = Object.keys(data);
     const values = keys.map(key => ({ metric: key, ...data[key][index] }));
     setCrosshairValues(values);
   };
 
+  /**
+   * Formats crosshair values
+   * @param {object} values - data point
+   */
   const formatCrosshairValues = values => {
     const formated = values.map(val => {
       return {
@@ -31,6 +43,10 @@ const Chart = () => {
     return formated;
   };
 
+  /**
+   * format crosshair title
+   * @param {object} values - data point
+   */
   const formatCrosshairTitle = values => {
     return {
       title: 'At',
@@ -40,6 +56,9 @@ const Chart = () => {
 
   return loading ? null : (
     <FlexibleXYPlot margin={{ left: 120, right: 50 }} yDomain={[0, 1]} onMouseLeave={() => setCrosshairValues([])}>
+      {/**
+       * Renders line series for each selected metric
+       */}
       {keys.map((metric, index) => {
         const lineProps = {
           data: data[metric],
@@ -70,6 +89,9 @@ const Chart = () => {
           ticks: { backgroundColor: theme.palette.chart.ligth },
         }}
       />
+      {/**
+       * Renders axis for PSI, F, % metrics' units
+       */}
       <YAxis
         orientation="left"
         title="PSI"
@@ -104,6 +126,9 @@ const Chart = () => {
           ticks: { backgroundColor: theme.palette.chart.ligth },
         }}
       />
+      {/**
+       * Renders crosshair for displaying metrics data on mouseOver
+       */}
       <Crosshair
         values={crosshairValues}
         titleFormat={formatCrosshairTitle}

@@ -7,6 +7,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import 'react-toastify/dist/ReactToastify.css';
 import Wrapper from './layout/wrapper.component';
 import Dashboard from './dashboard/dashboard.component';
+import ErrorBoundary from './error-boundary/error-boundary.component';
 import { theme } from './app.styles';
 const store = createStore();
 
@@ -15,7 +16,9 @@ const App = () => (
     <CssBaseline />
     <Provider store={store}>
       <Wrapper>
-        <Dashboard />
+        <ErrorBoundary>
+          <Dashboard />
+        </ErrorBoundary>
         <ToastContainer />
       </Wrapper>
     </Provider>

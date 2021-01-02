@@ -1,3 +1,7 @@
+/**
+ * Generates a hexadecimal color based on string input
+ * @param {string} str used to generate a hex color
+ */
 export const generateColor = str => {
   let hash = 0;
   for (let i = 0; i < str.length; i++) {

@@ -9,6 +9,9 @@ import { addNewMeasurement, measurementsApiErrorReceived } from '../../redux/met
 import Measurement from './measurement.component';
 import { useStyles } from './measurements.styles';
 
+/**
+ * Renders live metrics' measurements list
+ */
 const MeasurementsList = () => {
   const classes = useStyles();
   const selectedMetrics = useSelector(state => state.metrics.selectedMetrics);
@@ -23,6 +26,9 @@ const MeasurementsList = () => {
     dispatch(measurementsApiErrorReceived({ error: error.message }));
   };
 
+  /**
+   * Triggers subscription to get measurements updates
+   */
   useEffect(() => {
     try {
       const subscription = getSubscription({
@@ -39,6 +45,9 @@ const MeasurementsList = () => {
     // eslint-disable-next-line
   }, []);
 
+  /**
+   * Adds/removes metric to live measurements list when selected/deselected
+   */
   useEffect(() => {
     const newReadings = {};
     selectedMetrics.forEach(metric => {
@@ -47,6 +56,9 @@ const MeasurementsList = () => {
     setReadings(newReadings);
   }, [selectedMetrics]);
 
+  /**
+   * triggers rendering of new received measurement
+   */
   useEffect(() => {
     if (readings[newMeasurement.metric]) {
       const newReading = { ...readings };
