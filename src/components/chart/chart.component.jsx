@@ -34,13 +34,13 @@ const Chart = () => {
    * @param {object} values - data point
    */
   const formatCrosshairValues = values => {
-    const formated = values.map(val => {
+    const formatted = values.map(val => {
       return {
         title: val.metric,
         value: `${val.y} ${val.z}`,
       };
     });
-    return formated;
+    return formatted;
   };
 
   /**
@@ -90,7 +90,7 @@ const Chart = () => {
         }}
       />
       {/**
-       * Renders axis for PSI, F, % metrics' units
+       * Renders Y axis for PSI, F, % units
        */}
       <YAxis
         orientation="left"
