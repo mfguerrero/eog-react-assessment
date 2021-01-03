@@ -2,7 +2,7 @@ import React from 'react';
 import { toast } from 'react-toastify';
 
 /**
- * Catch rendering errors and handles them
+ * Catch rendering errors
  */
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -19,7 +19,6 @@ class ErrorBoundary extends React.Component {
     toast.error('😟 Something went wrong rendering the application!', {
       position: 'top-center',
       autoClose: false,
-      hideProgressBar: true,
       closeOnClick: true,
       draggable: true,
       progress: undefined,

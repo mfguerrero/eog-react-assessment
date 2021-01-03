@@ -66,7 +66,6 @@ const MetricsList = ({ visible }) => {
   };
 
   const metrics = useSelector(state => state.metrics.metrics);
-
   const { loading, data } = metrics;
 
   let rendering;

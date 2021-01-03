@@ -35,9 +35,10 @@ const Chart = () => {
    */
   const formatCrosshairValues = values => {
     const formatted = values.map(val => {
+      const { metric, y, z } = val;
       return {
-        title: val.metric,
-        value: `${val.y} ${val.z}`,
+        title: metric,
+        value: `${y} ${z === 'F' ? '\xB0' + z : z}`,
       };
     });
     return formatted;
@@ -54,10 +55,17 @@ const Chart = () => {
     };
   };
 
+  const formatKTick = value => {
+    if (value >= 1000) {
+      return `${Math.round((value / 1000) * 10) / 10}K`;
+    }
+    return value;
+  };
+
   return loading ? null : (
     <FlexibleXYPlot margin={{ left: 120, right: 50 }} yDomain={[0, 1]} onMouseLeave={() => setCrosshairValues([])}>
       {/**
-       * Renders line series for each selected metric
+       * Renders line series for each selected metric, normalize data on range [0,1]
        */}
       {keys.map((metric, index) => {
         const lineProps = {
@@ -96,7 +104,7 @@ const Chart = () => {
         orientation="left"
         title="PSI"
         tickFormat={value => {
-          return Math.floor(value * 2000);
+          return formatKTick(Math.floor(value * 2000));
         }}
         style={{
           line: { stroke: theme.palette.chart.ligth },
@@ -106,9 +114,9 @@ const Chart = () => {
       <YAxis
         orientation="left"
         left={-70}
-        title={'F'}
+        title={'\xB0F'}
         tickFormat={value => {
-          return Math.floor(value * 2100 + -100);
+          return formatKTick(Math.floor(value * 2100 + -100));
         }}
         style={{
           line: { stroke: theme.palette.chart.ligth },
@@ -138,7 +146,6 @@ const Chart = () => {
             backgroundColor: theme.palette.chart.ligth,
             color: theme.palette.chart.dark,
             opacity: 0.8,
-            width: 175,
           },
           line: { backgroundColor: theme.palette.chart.ligth },
         }}

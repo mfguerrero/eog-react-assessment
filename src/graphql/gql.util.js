@@ -1,5 +1,6 @@
 import { execute, makePromise, ApolloLink } from 'apollo-link';
 import { WebSocketLink } from 'apollo-link-ws';
+import { SubscriptionClient } from 'subscriptions-transport-ws';
 import { RetryLink } from 'apollo-link-retry';
 import { HttpLink } from 'apollo-link-http';
 
@@ -16,6 +17,10 @@ const retryLink = new RetryLink({
     max: 5,
     retryIf: (error, _operation) => !!error,
   },
+});
+
+const subscriptionClient = new SubscriptionClient(process.env.REACT_APP_GQL_WS_ENDPOINT, {
+  reconnect: true,
 });
 
 /**
@@ -37,6 +42,7 @@ export const fetchResult = operation => {
  * @param {object} operation - describes the operation (query & variables)
  */
 export const getSubscription = operation => {
-  const wsLink = new WebSocketLink({ uri: process.env.REACT_APP_GQL_WS_ENDPOINT });
+  // const wsLink = new WebSocketLink({ uri: process.env.REACT_APP_GQL_WS_ENDPOINT });
+  const wsLink = new WebSocketLink(subscriptionClient);
   return execute(wsLink, operation);
 };

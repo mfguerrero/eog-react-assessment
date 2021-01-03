@@ -62,7 +62,8 @@ const MeasurementsList = () => {
   useEffect(() => {
     if (readings[newMeasurement.metric]) {
       const newReading = { ...readings };
-      newReading[newMeasurement.metric] = `${newMeasurement.value} ${newMeasurement.unit}`;
+      const { metric, value, unit } = newMeasurement;
+      newReading[metric] = `${value} ${unit === 'F' ? '\xB0' + unit : unit}`;
       setReadings(newReading);
     }
     // eslint-disable-next-line
