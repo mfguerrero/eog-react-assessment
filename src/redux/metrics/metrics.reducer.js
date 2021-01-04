@@ -7,12 +7,16 @@ const metricsSlice = createSlice({
     selectedMetrics: [],
     measurements: { loading: false, data: {} },
     newMeasurement: {},
+    chartMinutes: 30,
   },
   reducers: {
     /**
      * Sets metric's loading prop to true, triggers async metrics fetch
      * @param {reduxState} state
      */
+    setChartMinutes: (state, action) => {
+      state.chartMinutes = action.payload;
+    },
     fetchMetricsStart: state => {
       state.metrics.loading = true;
     },
@@ -99,6 +103,7 @@ const metricsSlice = createSlice({
  * Exports metrics' reducer, actions
  */
 export const {
+  setChartMinutes,
   fetchMetricsStart,
   metricsDataReceived,
   metricsApiErrorReceived,

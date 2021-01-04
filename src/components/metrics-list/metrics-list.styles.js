@@ -11,4 +11,15 @@ export const useStyles = makeStyles(theme => ({
   visible: {
     display: 'block',
   },
+  formControl: {
+    margin: theme.spacing(1),
+    width: '100%',
+    minWidth: 120,
+    position: 'relative',
+  },
+  label: {
+    backgroundColor: '#ffffff',
+    paddingLeft: 5,
+    paddingRight: 5,
+  },
 }));

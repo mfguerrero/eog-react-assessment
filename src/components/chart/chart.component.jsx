@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
 import { FlexibleXYPlot, XAxis, YAxis, Crosshair, LineSeriesCanvas } from 'react-vis';
+import CircularProgress from '@material-ui/core/CircularProgress/CircularProgress';
 import { useTheme } from '@material-ui/core/styles';
 import 'react-vis/dist/styles/plot.scss';
 import './chart.styles.scss';
@@ -66,7 +67,11 @@ const Chart = () => {
     return value;
   };
 
-  return loading ? null : (
+  return loading ? (
+    <div className="progress">
+      <CircularProgress />
+    </div>
+  ) : (
     <FlexibleXYPlot margin={{ left: 120, right: 50 }} yDomain={[0, 1]} onMouseLeave={() => setCrosshairValues([])}>
       {/**
        * Renders line series for each selected metric, normalize data on range [0,1]

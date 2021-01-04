@@ -47,9 +47,9 @@ export const getSubscription = operation => {
   return execute(wsLink, operation);
 };
 
-export const prepareMeasurementsQuery = metrics => {
+export const prepareMeasurementsQuery = (metrics, minutes = 30) => {
   const after = moment()
-    .subtract(30, 'minutes')
+    .subtract(minutes, 'minutes')
     .valueOf();
   const measurementsQuery = [];
   metrics.forEach(metric => {

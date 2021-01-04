@@ -9,11 +9,20 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListSubheader from '@material-ui/core/ListSubheader';
+import MenuItem from '@material-ui/core/MenuItem/MenuItem';
+import Select from '@material-ui/core/Select/Select';
+import FormControl from '@material-ui/core/FormControl/FormControl';
+import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import TimelineIcon from '@material-ui/icons/Timeline';
 import Switch from '@material-ui/core/Switch';
 import Paper from '@material-ui/core/Paper';
 import { useStyles } from './metrics-list.styles';
-import { fetchMetricsStart, addSelectedMetric, removeSelectedMetric } from '../../redux/metrics/metrics.reducer';
+import {
+  fetchMetricsStart,
+  addSelectedMetric,
+  removeSelectedMetric,
+  setChartMinutes,
+} from '../../redux/metrics/metrics.reducer';
 import { fetchMeasurementsStart } from '../../redux/metrics/metrics.reducer';
 import { generateColor } from '../../util/util';
 import { prepareMeasurementsQuery } from '../../graphql/gql.util';
@@ -28,6 +37,13 @@ const MetricsList = ({ visible }) => {
   const metricsPaper = clsx(classes.paper, classes.metrics, visible && classes.visible);
 
   const selectedMetrics = useSelector(state => state.metrics.selectedMetrics);
+  const chartMinutes = useSelector(state => state.metrics.chartMinutes);
+
+  const handleMinutesChange = event => {
+    const minutes = event.target.value;
+    dispatch(setChartMinutes(minutes));
+    dispatch(fetchMeasurementsStart(prepareMeasurementsQuery(selectedMetrics, minutes)));
+  };
 
   /**
    * Triggers metrics fetching
@@ -41,7 +57,7 @@ const MetricsList = ({ visible }) => {
    *  Fetch measurements when a metric is selected/deselected
    */
   useEffect(() => {
-    dispatch(fetchMeasurementsStart(prepareMeasurementsQuery(selectedMetrics)));
+    dispatch(fetchMeasurementsStart(prepareMeasurementsQuery(selectedMetrics, chartMinutes)));
     //eslint-disable-next-line
   }, [selectedMetrics]);
 
@@ -67,6 +83,24 @@ const MetricsList = ({ visible }) => {
   else
     rendering = (
       <List className={classes.root}>
+        <ListItem>
+          <FormControl variant="outlined" className={classes.formControl}>
+            <InputLabel id="minutes-displayed" className={classes.label}>
+              Chart Display
+            </InputLabel>
+            <Select
+              labelId="minutes-displayed"
+              id="demo-simple-select-outlined"
+              value={chartMinutes}
+              onChange={handleMinutesChange}
+            >
+              <MenuItem value={5}>5 minutes</MenuItem>
+              <MenuItem value={10}>10 minutes</MenuItem>
+              <MenuItem value={20}>20 minutes</MenuItem>
+              <MenuItem value={30}>30 minutes</MenuItem>
+            </Select>
+          </FormControl>
+        </ListItem>
         <ListSubheader>Available Metrics</ListSubheader>
         {data.map(metric => {
           return (
