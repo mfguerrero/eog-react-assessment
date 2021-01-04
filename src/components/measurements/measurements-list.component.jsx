@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { CssBaseline } from '@material-ui/core';
 import { useSelector } from 'react-redux';
-
-import { getSubscription } from '../../graphql/gql.util';
 import { MEASUREMENT_SUBSCRIPTION } from '../../graphql/gql.queries';
+import { getSubscription } from '../../graphql/gql.util';
 import { addNewMeasurement, measurementsApiErrorReceived } from '../../redux/metrics/metrics.reducer';
 import Measurement from './measurement.component';
 import { useStyles } from './measurements.styles';
@@ -35,10 +34,13 @@ const MeasurementsList = () => {
         query: MEASUREMENT_SUBSCRIPTION,
         variables: {},
       });
-      subscription.subscribe({
+      const subscribed = subscription.subscribe({
         next: newMeasurementDataHandler,
         error: newMeasurementErrorHandler,
       });
+      return () => {
+        subscribed.unsubscribe();
+      };
     } catch (error) {
       dispatch(measurementsApiErrorReceived({ error: error.message }));
     }

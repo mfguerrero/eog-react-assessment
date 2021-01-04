@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import moment from 'moment';
 import clsx from 'clsx';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import List from '@material-ui/core/List';
@@ -17,6 +16,7 @@ import { useStyles } from './metrics-list.styles';
 import { fetchMetricsStart, addSelectedMetric, removeSelectedMetric } from '../../redux/metrics/metrics.reducer';
 import { fetchMeasurementsStart } from '../../redux/metrics/metrics.reducer';
 import { generateColor } from '../../util/util';
+import { prepareMeasurementsQuery } from '../../graphql/gql.util';
 
 /**
  * Renders the list of available metrics fetched
@@ -41,14 +41,7 @@ const MetricsList = ({ visible }) => {
    *  Fetch measurements when a metric is selected/deselected
    */
   useEffect(() => {
-    const after = moment()
-      .subtract(30, 'minutes')
-      .valueOf();
-    const measurementsQuery = [];
-    selectedMetrics.forEach(metric => {
-      measurementsQuery.push({ metricName: metric, after });
-    });
-    dispatch(fetchMeasurementsStart(measurementsQuery));
+    dispatch(fetchMeasurementsStart(prepareMeasurementsQuery(selectedMetrics)));
     //eslint-disable-next-line
   }, [selectedMetrics]);
 

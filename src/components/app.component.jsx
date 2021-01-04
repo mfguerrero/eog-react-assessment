@@ -9,6 +9,7 @@ import Wrapper from './layout/wrapper.component';
 import Dashboard from './dashboard/dashboard.component';
 import ErrorBoundary from './error-boundary/error-boundary.component';
 import { theme } from './app.styles';
+
 const store = createStore();
 
 const App = () => (

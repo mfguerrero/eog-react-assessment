@@ -9,6 +9,10 @@ import './chart.styles.scss';
 import { generateColor } from '../../util/util';
 
 /**
+ * allows chart rendering correctly on HiDPI screens
+ */
+window.devicePixelRatio = 1;
+/**
  * Renders metrics' measurements
  */
 const Chart = () => {
@@ -74,6 +78,7 @@ const Chart = () => {
           color: generateColor(metric),
           opacityType: 'literal',
           strokeWidth: 1,
+          style: { width: '100%', height: '100%' },
         };
         if (index === 0) {
           lineProps.onNearestX = (value, { index }) => setCrosshairVal(value, index);
