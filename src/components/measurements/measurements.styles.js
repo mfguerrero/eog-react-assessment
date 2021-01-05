@@ -24,12 +24,22 @@ export const useStyles = makeStyles(theme => ({
       marginRight: 10,
       width: 200,
     },
+    [theme.breakpoints.between('xs', 'sm')]: {
+      marginRight: 10,
+      width: 160,
+    },
   },
   reading: {
     margin: 0,
+    [theme.breakpoints.between('xs', 'sm')]: {
+      fontSize: '1.4rem',
+    },
   },
   readingTitle: {
     margin: 0,
+    [theme.breakpoints.between('xs', 'sm')]: {
+      fontSize: '1rem',
+    },
   },
   metricColor: {
     display: 'inline-block',

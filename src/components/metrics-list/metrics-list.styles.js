@@ -3,10 +3,13 @@ import { makeStyles } from '@material-ui/core/styles';
 export const useStyles = makeStyles(theme => ({
   metrics: {
     position: 'absolute',
-    top: 75,
-    right: 32,
+    top: theme.spacing(9),
+    right: theme.spacing(2),
     display: 'none',
     width: 300,
+    [theme.breakpoints.between('xs', 'sm')]: {
+      top: theme.spacing(12),
+    },
   },
   visible: {
     display: 'block',
@@ -14,7 +17,6 @@ export const useStyles = makeStyles(theme => ({
   formControl: {
     margin: theme.spacing(1),
     width: '100%',
-    minWidth: 120,
     position: 'relative',
   },
   label: {

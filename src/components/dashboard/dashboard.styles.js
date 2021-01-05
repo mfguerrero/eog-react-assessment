@@ -5,16 +5,18 @@ export const useStyles = makeStyles(theme => ({
     height: '100%',
     display: 'grid',
     gridTemplateRows: '75px 1fr',
+    [theme.breakpoints.between('xs', 'sm')]: {
+      gridTemplateRows: '100px 1fr',
+    },
   },
   toolbar: {
     minHeight: 50,
-  },
-  toolbarIcon: {
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: '0 8px',
-    ...theme.mixins.toolbar,
+    alignItems: 'flex-start',
+    paddingTop: 10,
+    [theme.breakpoints.between('xs', 'sm')]: {
+      minHeight: 70,
+    },
   },
   title: {
     display: 'flex',
@@ -55,8 +57,11 @@ export const useStyles = makeStyles(theme => ({
   },
   metricsFab: {
     position: 'absolute',
+    right: theme.spacing(2),
     top: theme.spacing(2),
-    right: theme.spacing(4),
+    [theme.breakpoints.between('xs', 'sm')]: {
+      top: theme.spacing(5),
+    },
   },
   chartContainer: {
     height: '100%',
